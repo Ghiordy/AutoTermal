@@ -1,6 +1,7 @@
 #include<DHT.h>
-#include<DHT_U.h>
+//#include<DHT_U.h>
 #include <LiquidCrystal.h>
+//#include "actuators.h"
 
 // define temperature value and error
 float VALUE = 30;
@@ -12,7 +13,7 @@ float fix_down = 30*(1-UNCERTAIN);
 const int RELE = 23;
 
 // DHT22 Temperature and humidity
-int SENSOR = 22;   
+int SENSOR = 2;//22;   
 float TEMPERATURA;
 float HUMEDAD;
 DHT dht(SENSOR, DHT22);
@@ -22,7 +23,7 @@ float DT;
 
 //Statistics variables
 int n = 10;
-int ts = 100;
+int ts = 4; // seconds
 float Pred;
 int aj = 60;
 
@@ -51,10 +52,11 @@ void loop() {
   for (int i=0; i<n; i++){
     //Getting temperature value
     TEMPERATURA = dht.readTemperature();
+    Serial.println(TEMPERATURA);
     DT = DT + TEMPERATURA;
-    delay(ts);
+    delay(ts*1000);
   }
-  TEMPERATURA = DT / n ;
+  TEMPERATURA = DT / (n) ;
   Serial.print(TEMPERATURA);
   Serial.print(",");
   lcd.print("T:"+String(TEMPERATURA));
@@ -64,7 +66,7 @@ void loop() {
   Serial.print(HUMEDAD);  
   Serial.print(",");
   lcd.print(" H:"+String(HUMEDAD));
-  Pred = aj*DT + TEMPERATURA;
+  Pred = ((aj*DT)/(ts*n)) + TEMPERATURA;
   lcd.setCursor(0,1);
   Serial.print(DT);
   Serial.print(",");
