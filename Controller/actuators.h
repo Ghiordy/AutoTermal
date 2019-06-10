@@ -5,6 +5,7 @@
 
  class actuators{
   // ATRIBUTIONS
+  enum kind;
   private:
     enum kind(heater,colder);
   
