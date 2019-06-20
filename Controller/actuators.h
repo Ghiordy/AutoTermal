@@ -5,7 +5,9 @@
 
  class actuators{
   // ATRIBUTIONS
+  //String kind;
   enum kind;
+  int pin;
   private:
     enum kind(heater,colder);
   
